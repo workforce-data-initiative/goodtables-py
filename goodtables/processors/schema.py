@@ -337,13 +337,13 @@ class SchemaProcessor(base.Processor):
                         # TODO: check constraints.min* and constraints.max*
                         # check type and format
                         try:
-                            schema_cast = self.schema.cast(column_name,
-                                                           column_value)
+                            self.schema.cast(column_name, column_value)
+                            cast_failed = False
                         except (jsontableschema.exceptions.InvalidCastError,
                                 jsontableschema.exceptions.ConstraintError):
-                            schema_cast = False
+                            cast_failed = True
 
-                        if schema_cast is False:
+                        if cast_failed:
                             expected_type = self.schema.get_type(column_name).name.title()
 
                             if self.process_extra_fields and \
